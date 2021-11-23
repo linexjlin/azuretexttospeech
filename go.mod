@@ -1,4 +1,4 @@
-module github.com/jesseward/azuretexttospeech
+module github.com/gmaisto/azuretexttospeech
 
 go 1.14
 

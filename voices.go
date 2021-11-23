@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/davecgh/go-spew/spew"
 )
 
 // voiceListAPI is the source for supported voice list to region mapping
@@ -69,6 +71,7 @@ func (az *AzureCSTextToSpeech) fetchVoiceList() ([]regionVoiceListResponse, erro
 
 	switch response.StatusCode {
 	case http.StatusOK:
+		spew.Dump(response.Body)
 		var r []regionVoiceListResponse
 		if err := json.NewDecoder(response.Body).Decode(&r); err != nil {
 			return nil, fmt.Errorf("unable to decode voice list response body, %v", err)

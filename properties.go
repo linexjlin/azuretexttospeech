@@ -123,7 +123,7 @@ const (
 	LocaleetEE                // et-EE
 	LocalefaIR                // fa-IR
 	LocalefiFI                // fi-FI
-	LocalefilPH               // il-PH
+	LocalefilPH               // fil-PH
 	LocalefrBE                // fr-BE
 	LocalefrCA                // fr-CA
 	LocalefrCH                // fr-CH

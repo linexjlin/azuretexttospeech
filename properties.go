@@ -58,61 +58,125 @@ const (
 type Locale int
 
 const (
-	LocaleArEG Locale = iota //ar-EG
-	LocaleArSA               // ar-SA
-	LocaleBgBG               // bg-BG
-	LocaleCaES               // ca-ES
-	LocaleCsCZ               // cs-CZ
-	LocaleDaDK               // da-DK
-	LocaleDeAT               // de-AT
-	LocaleDeCH               // de-CH
-	LocaleDeDE               // de-DE
-	LocaleElGR               // el-GR
-	LocaleEnAU               // en-AU
-	LocaleEnCA               // en-CA
-	LocaleEnGB               // en-GB
-	LocaleEnIE               // en-IE
-	LocaleEnIN               // en-IN
-	LocaleEnUS               // en-US
-	LocaleEsES               // es-ES
-	LocaleEsMX               // es-MX
-	LocaleEtEE               // et-EE
-	LocaleFiFI               // fi-FI
-	LocaleFrCA               // fr-CA
-	LocaleFrCH               // fr-CH
-	LocaleFrFR               // fr-FR
-	LocaleGaIE               // ga-IE
-	LocaleHeIL               // he-IL
-	LocaleHiIN               // hi-IN
-	LocaleHrHR               // hr-HR
-	LocaleHuHU               // hu-HU
-	LocaleIdID               // id-ID
-	LocaleItIT               // it-IT
-	LocaleJaJP               // ja-JP
-	LocaleKoKR               // ko-KR
-	LocaleLtLT               // lt-LT
-	LocaleLvLV               // lv-LV
-	LocaleMtMT               // mt-MT
-	LocaleMrIN               // mr-IN
-	LocaleMsMY               // ms-MY
-	LocaleNbNO               // nb-NO
-	LocaleNlNL               // nl-NL
-	LocalePlPL               // pl-PL
-	LocalePtBR               // pt-BR
-	LocalePtPT               // pt-PT
-	LocaleRoRO               // ro-RO
-	LocaleRuRU               // ru-RU
-	LocaleSkSK               // sk-SK
-	LocaleSlSI               // sl-SI
-	LocaleSvSE               // sv-SE
-	LocaleTaIN               // ta-IN
-	LocaleTeIN               // te-IN
-	LocaleThTH               // th-TH
-	LocaleTrTR               // tr-TR
-	LocaleViVN               // vi-VN
-	LocaleZhCN               // zh-CN
-	LocaleZhHK               // zh-HK
-	LocaleZhTW               // zh-TW
+	LocaleafZA Locale = iota
+	LocaleamET
+	LocalearAE
+	LocalearBH
+	LocalearDZ
+	LocalearEG
+	LocalearIQ
+	LocalearJO
+	LocalearKW
+	LocalearLY
+	LocalearMA
+	LocalearQA
+	LocalearSA
+	LocalearSY
+	LocalearTN
+	LocalearYE
+	LocalebgBG
+	LocalebnBD
+	LocalecaES
+	LocalecsCZ
+	LocalecyGB
+	LocaledaDK
+	LocaledeAT
+	LocaledeCH
+	LocaledeDE
+	LocaleelGR
+	LocaleenAU
+	LocaleenCA
+	LocaleenGB
+	LocaleenHK
+	LocaleenIE
+	LocaleenIN
+	LocaleenKE
+	LocaleenNG
+	LocaleenNZ
+	LocaleenPH
+	LocaleenSG
+	LocaleenTZ
+	LocaleenUS
+	LocaleenZA
+	LocaleesAR
+	LocaleesBO
+	LocaleesCL
+	LocaleesCO
+	LocaleesCR
+	LocaleesCU
+	LocaleesDO
+	LocaleesEC
+	LocaleesES
+	LocaleesGQ
+	LocaleesGT
+	LocaleesHN
+	LocaleesMX
+	LocaleesNI
+	LocaleesPA
+	LocaleesPE
+	LocaleesPR
+	LocaleesPY
+	LocaleesSV
+	LocaleesUS
+	LocaleesUY
+	LocaleesVE
+	LocaleetEE
+	LocalefaIR
+	LocalefiFI
+	LocalefilPH
+	LocalefrBE
+	LocalefrCA
+	LocalefrCH
+	LocalefrFR
+	LocalegaIE
+	LocaleglES
+	LocaleguIN
+	LocaleheIL
+	LocalehiIN
+	LocalehrHR
+	LocalehuHU
+	LocaleidID
+	LocaleitIT
+	LocalejaJP
+	LocalejvID
+	LocalekmKH
+	LocalekoKR
+	LocaleltLT
+	LocalelvLV
+	LocalemrIN
+	LocalemsMY
+	LocalemtMT
+	LocalemyMM
+	LocalenbNO
+	LocalenlBE
+	LocalenlNL
+	LocaleplPL
+	LocaleptBR
+	LocaleptPT
+	LocaleroRO
+	LocaleruRU
+	LocaleskSK
+	LocaleslSI
+	LocalesoSO
+	LocalesuID
+	LocalesvSE
+	LocaleswKE
+	LocaleswTZ
+	LocaletaIN
+	LocaletaLK
+	LocaletaSG
+	LocaleteIN
+	LocalethTH
+	LocaletrTR
+	LocaleukUA
+	LocaleurIN
+	LocaleurPK
+	LocaleuzUZ
+	LocaleviVN
+	LocalezhCN
+	LocalezhHK
+	LocalezhTW
+	LocalezuZA
 )
 
 // Region references the locations of the availability of standard voices.

@@ -74,16 +74,14 @@ func (az *AzureCSTextToSpeech) fetchVoiceList() ([]regionVoiceListResponse, erro
 	// Perform the request
 	res, err := req.Send()
 	if err != nil {
-		fmt.Printf("Request error: %s\n", err)
 		return nil, err
 	}
 	if !res.Ok {
-		fmt.Printf("Invalid server response: %d\n", res.StatusCode)
 		return nil, err
 	}
 
 	// Reads the whole body and returns it as string
-	fmt.Printf("Body: %s", res.String())
+	//fmt.Printf("Body: %s", res.String())
 
 	// request, err := http.NewRequest(http.MethodGet, az.voiceServiceListURL, nil)
 	// if err != nil {
@@ -104,10 +102,6 @@ func (az *AzureCSTextToSpeech) fetchVoiceList() ([]regionVoiceListResponse, erro
 		if err := json.Unmarshal(res.Bytes(), &r); err != nil {
 			return nil, fmt.Errorf("unable to decode voice list response body, %v", err)
 		}
-
-		// if err := json.NewDecoder(response.Body).Decode(&r); err != nil {
-		// 	return nil, fmt.Errorf("unable to decode voice list response body, %v", err)
-		// }
 		return r, nil
 	case http.StatusBadRequest:
 		return nil, fmt.Errorf("%d - A required parameter is missing, empty, or null. Or, the value passed to either a required or optional parameter is invalid. A common issue is a header that is too long", res.StatusCode)

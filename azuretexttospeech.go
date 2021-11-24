@@ -8,6 +8,8 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/davecgh/go-spew/spew"
 )
 
 // The following are V1 endpoints for Cognitiveservices endpoints
@@ -164,6 +166,8 @@ func New(subscriptionKey string, region Region) (*AzureCSTextToSpeech, error) {
 	if err != nil {
 		return nil, fmt.Errorf("unable to fetch voice-map, %v", err)
 	}
+
+	spew.Dump(m)
 	az.RegionVoiceMap = m
 
 	az.TokenRefreshDoneCh = az.startRefresher()

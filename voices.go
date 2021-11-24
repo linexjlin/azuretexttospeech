@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/davecgh/go-spew/spew"
 	"gopkg.in/h2non/gentleman.v2"
 )
 
@@ -47,6 +48,7 @@ func (az *AzureCSTextToSpeech) buildVoiceToRegionMap() (RegionVoiceMap, error) {
 
 	m := make(map[supportedVoices]string)
 	for _, x := range v {
+		spew.Dump(x)
 		if x.VoiceType == voiceStandard {
 			m[supportedVoices{Gender: x.Gender, Locale: x.Locale}] = x.ShortName
 		}

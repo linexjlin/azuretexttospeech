@@ -25,23 +25,23 @@ const (
 	Audio24khz96kbitrateMonoMp3
 )
 
-func (a AudioOutput) String() string {
-	return []string{"riff-8khz-8bit-mono-mulaw",
-		"riff-16khz-16bit-mono-pcm",
-		"riff-16khz-16kbps-mono-siren",
-		"riff-24khz-16bit-mono-pcm",
-		"raw-8khz-8bit-mono-mulaw",
-		"raw-16khz-16bit-mono-pcm",
-		"raw-24khz-16bit-mono-pcm",
-		"ssml-16khz-16bit-mono-tts",
-		"audio-16khz-16kbps-mono-siren",
-		"audio-16khz-32kbitrate-mono-mp3",
-		"audio-16khz-64kbitrate-mono-mp3",
-		"audio-16khz-128kbitrate-mono-mp3",
-		"audio-24khz-48kbitrate-mono-mp3",
-		"audio-24khz-96kbitrate-mono-mp3",
-	}[a]
-}
+// func (a AudioOutput) String() string {
+// 	return []string{"riff-8khz-8bit-mono-mulaw",
+// 		"riff-16khz-16bit-mono-pcm",
+// 		"riff-16khz-16kbps-mono-siren",
+// 		"riff-24khz-16bit-mono-pcm",
+// 		"raw-8khz-8bit-mono-mulaw",
+// 		"raw-16khz-16bit-mono-pcm",
+// 		"raw-24khz-16bit-mono-pcm",
+// 		"ssml-16khz-16bit-mono-tts",
+// 		"audio-16khz-16kbps-mono-siren",
+// 		"audio-16khz-32kbitrate-mono-mp3",
+// 		"audio-16khz-64kbitrate-mono-mp3",
+// 		"audio-16khz-128kbitrate-mono-mp3",
+// 		"audio-24khz-48kbitrate-mono-mp3",
+// 		"audio-24khz-96kbitrate-mono-mp3",
+// 	}[a]
+// }
 
 // Gender type for the digitized language
 //go:generate enumer -type=Gender -linecomment -json

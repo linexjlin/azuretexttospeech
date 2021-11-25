@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 
 	"gopkg.in/h2non/gentleman.v2"
 )
@@ -65,9 +64,6 @@ func (az *AzureCSTextToSpeech) fetchVoiceList() ([]regionVoiceListResponse, erro
 	// Create a new request based on the current client
 	req := cli.Request()
 
-	// // Define the URL path at request level
-	// req.Path("/headers")
-
 	// Set a new header field
 	req.SetHeader("Authorization", "Bearer "+az.accessToken)
 
@@ -79,22 +75,6 @@ func (az *AzureCSTextToSpeech) fetchVoiceList() ([]regionVoiceListResponse, erro
 	if !res.Ok {
 		return nil, err
 	}
-
-	// Reads the whole body and returns it as string
-	//fmt.Printf("Body: %s", res.String())
-
-	// request, err := http.NewRequest(http.MethodGet, az.voiceServiceListURL, nil)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// request.Header.Set("Authorization", "Bearer "+az.accessToken)
-	// client := &http.Client{Timeout: 2 * time.Second}
-	// response, err := client.Do(request)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// defer response.Body.Close()
 
 	switch res.StatusCode {
 	case http.StatusOK:
@@ -113,38 +93,4 @@ func (az *AzureCSTextToSpeech) fetchVoiceList() ([]regionVoiceListResponse, erro
 		return nil, fmt.Errorf("%d - Network or server-side issue. May also indicate invalid headers", res.StatusCode)
 	}
 	return nil, fmt.Errorf("%d - unexpected response code from voice list API", res.StatusCode)
-}
-
-func (az *AzureCSTextToSpeech) OfetchVoiceList() ([]regionVoiceListResponse, error) {
-
-	request, err := http.NewRequest(http.MethodGet, az.voiceServiceListURL, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	request.Header.Set("Authorization", "Bearer "+az.accessToken)
-	client := &http.Client{Timeout: 2 * time.Second}
-	response, err := client.Do(request)
-	if err != nil {
-		return nil, err
-	}
-	defer response.Body.Close()
-
-	switch response.StatusCode {
-	case http.StatusOK:
-		var r []regionVoiceListResponse
-		if err := json.NewDecoder(response.Body).Decode(&r); err != nil {
-			return nil, fmt.Errorf("unable to decode voice list response body, %v", err)
-		}
-		return r, nil
-	case http.StatusBadRequest:
-		return nil, fmt.Errorf("%d - A required parameter is missing, empty, or null. Or, the value passed to either a required or optional parameter is invalid. A common issue is a header that is too long", response.StatusCode)
-	case http.StatusUnauthorized:
-		return nil, fmt.Errorf("%d - The request is not authorized. Check to make sure your subscription key or token is valid and in the correct region", response.StatusCode)
-	case http.StatusTooManyRequests:
-		return nil, fmt.Errorf("%d - You have exceeded the quota or rate of requests allowed for your subscription", response.StatusCode)
-	case http.StatusBadGateway:
-		return nil, fmt.Errorf("%d - Network or server-side issue. May also indicate invalid headers", response.StatusCode)
-	}
-	return nil, fmt.Errorf("%d - unexpected response code from voice list API", response.StatusCode)
 }

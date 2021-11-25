@@ -4,6 +4,8 @@ package azuretexttospeech
 // This type is required when requesting to azuretexttospeech.Synthesize text-to-speed request.
 // Each incorporates a bitrate and encoding type. The Speech service supports 24 kHz, 16 kHz, and 8 kHz audio outputs.
 // See: https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#audio-outputs
+
+//go:generate enumer -type=AudioOutput
 type AudioOutput int
 
 const (

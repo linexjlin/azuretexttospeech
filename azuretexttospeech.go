@@ -3,6 +3,7 @@ package azuretexttospeech
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -49,18 +50,24 @@ func (az *AzureCSTextToSpeech) SynthesizeWithContext(ctx context.Context, speech
 
 	var client *http.Client
 
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+
 	if az.HttpProxy != "" {
 		proxyURL, err := url.Parse(az.HttpProxy)
 		if err != nil {
 			return nil, err
 		}
 
-		transport := &http.Transport{Proxy: http.ProxyURL(proxyURL)}
-		client = &http.Client{Transport: transport}
+		tr.Proxy = http.ProxyURL(proxyURL)
+		//transport := &http.Transport{Proxy: http.ProxyURL(proxyURL)}
+		client = &http.Client{Transport: tr}
 
 	} else {
 
-		client = &http.Client{}
+		client = &http.Client{Transport: tr}
+		//client = &http.Client{}
 	}
 
 	response, err := client.Do(request.WithContext(ctx))
@@ -116,18 +123,24 @@ func (az *AzureCSTextToSpeech) refreshToken() error {
 
 	var client *http.Client
 
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+
 	if az.HttpProxy != "" {
 		proxyURL, err := url.Parse(az.HttpProxy)
 		if err != nil {
 			return err
 		}
 
-		transport := &http.Transport{Proxy: http.ProxyURL(proxyURL)}
-		client = &http.Client{Timeout: tokenRefreshTimeout, Transport: transport}
+		tr.Proxy = http.ProxyURL(proxyURL)
+		//transport := &http.Transport{Proxy: http.ProxyURL(proxyURL)}
+		client = &http.Client{Transport: tr}
 
 	} else {
 
-		client = &http.Client{Timeout: tokenRefreshTimeout}
+		client = &http.Client{Transport: tr}
+		//client = &http.Client{}
 	}
 
 	response, err := client.Do(request)

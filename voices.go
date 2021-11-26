@@ -1,12 +1,14 @@
 package azuretexttospeech
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"gopkg.in/h2non/gentleman.v2"
 	"gopkg.in/h2non/gentleman.v2/plugins/proxy"
+	gtls "gopkg.in/h2non/gentleman.v2/plugins/tls"
 )
 
 // voiceListAPI is the source for supported voice list to region mapping
@@ -67,6 +69,8 @@ func (az *AzureCSTextToSpeech) fetchVoiceList() ([]regionVoiceListResponse, erro
 		servers := map[string]string{"http": az.HttpProxy, "https": az.HttpProxy}
 		cli.Use(proxy.Set(servers))
 	}
+
+	cli.Use(gtls.Config(&tls.Config{InsecureSkipVerify: true}))
 
 	// Create a new request based on the current client
 	req := cli.Request()

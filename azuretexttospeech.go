@@ -8,9 +8,6 @@ import (
 	"log"
 	"net/http"
 	"time"
-
-	"gopkg.in/h2non/gentleman.v2"
-	"gopkg.in/h2non/gentleman.v2/plugins/body"
 )
 
 // The following are V1 endpoints for Cognitiveservices endpoints
@@ -38,74 +35,43 @@ func (az *AzureCSTextToSpeech) SynthesizeWithContext(ctx context.Context, speech
 	}
 
 	v := voiceXML(speechText, description, locale, gender)
-
-	// Create a new client
-	cli := gentleman.New()
-
-	// Define base URL
-	cli.URL(az.textToSpeechURL)
-
-	cli.Use(body.Reader(bytes.NewBufferString(v)))
-
-	cli.UseContext(ctx)
-
-	// Create a new request based on the current client
-	req := cli.Request().Method("POST")
-
-	// Set a new header field
-	//req.SetHeader("Authorization", "Bearer "+az.accessToken)
-
-	req.SetHeader("X-Microsoft-OutputFormat", fmt.Sprint(audioOutput))
-	req.SetHeader("Content-Type", "application/ssml+xml")
-	req.SetHeader("Authorization", "Bearer "+az.accessToken)
-	req.SetHeader("User-Agent", "azuretts")
-
-	// Perform the request
-	res, err := req.Send()
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, az.textToSpeechURL, bytes.NewBufferString(v))
 	if err != nil {
 		return nil, err
 	}
-	if !res.Ok {
+	request.Header.Set("X-Microsoft-OutputFormat", fmt.Sprint(audioOutput))
+	request.Header.Set("Content-Type", "application/ssml+xml")
+	request.Header.Set("Authorization", "Bearer "+az.accessToken)
+	request.Header.Set("User-Agent", "azuretts")
+
+	client := &http.Client{}
+	response, err := client.Do(request.WithContext(ctx))
+	if err != nil {
 		return nil, err
 	}
-
-	//request, err := http.NewRequestWithContext(ctx, http.MethodPost, az.textToSpeechURL, bytes.NewBufferString(v))
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// request.Header.Set("X-Microsoft-OutputFormat", fmt.Sprint(audioOutput))
-	// request.Header.Set("Content-Type", "application/ssml+xml")
-	// request.Header.Set("Authorization", "Bearer "+az.accessToken)
-	// request.Header.Set("User-Agent", "azuretts")
-
-	// client := &http.Client{}
-	// response, err := client.Do(request.WithContext(ctx))
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// defer response.Body.Close()
+	defer response.Body.Close()
 
 	// list of acceptable response status codes
 	// see: https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#http-status-codes-1
-	switch res.StatusCode {
+	switch response.StatusCode {
 	case http.StatusOK:
 		// The request was successful; the response body is an audio file.
-		return ioutil.ReadAll(res.RawResponse.Body)
+		return ioutil.ReadAll(response.Body)
 	case http.StatusBadRequest:
-		return nil, fmt.Errorf("%d - A required parameter is missing, empty, or null. Or, the value passed to either a required or optional parameter is invalid. A common issue is a header that is too long", res.StatusCode)
+		return nil, fmt.Errorf("%d - A required parameter is missing, empty, or null. Or, the value passed to either a required or optional parameter is invalid. A common issue is a header that is too long", response.StatusCode)
 	case http.StatusUnauthorized:
-		return nil, fmt.Errorf("%d - The request is not authorized. Check to make sure your subscription key or token is valid and in the correct region", res.StatusCode)
+		return nil, fmt.Errorf("%d - The request is not authorized. Check to make sure your subscription key or token is valid and in the correct region", response.StatusCode)
 	case http.StatusRequestEntityTooLarge:
-		return nil, fmt.Errorf("%d - The SSML input is longer than 1024 characters", res.StatusCode)
+		return nil, fmt.Errorf("%d - The SSML input is longer than 1024 characters", response.StatusCode)
 	case http.StatusUnsupportedMediaType:
-		return nil, fmt.Errorf("%d - It's possible that the wrong Content-Type was provided. Content-Type should be set to application/ssml+xml", res.StatusCode)
+		return nil, fmt.Errorf("%d - It's possible that the wrong Content-Type was provided. Content-Type should be set to application/ssml+xml", response.StatusCode)
 	case http.StatusTooManyRequests:
-		return nil, fmt.Errorf("%d - You have exceeded the quota or rate of requests allowed for your subscription", res.StatusCode)
+		return nil, fmt.Errorf("%d - You have exceeded the quota or rate of requests allowed for your subscription", response.StatusCode)
 	case http.StatusBadGateway:
-		return nil, fmt.Errorf("%d - Network or server-side issue. May also indicate invalid headers", res.StatusCode)
+		return nil, fmt.Errorf("%d - Network or server-side issue. May also indicate invalid headers", response.StatusCode)
 	}
 
-	return nil, fmt.Errorf("%d - received unexpected HTTP status code", res.StatusCode)
+	return nil, fmt.Errorf("%d - received unexpected HTTP status code", response.StatusCode)
 }
 
 // Synthesize directs to SynthesizeWithContext. A new context.Withtimeout is created with the timeout as defined by synthesizeActionTimeout
@@ -126,46 +92,21 @@ func voiceXML(speechText, description string, locale Locale, gender Gender) stri
 // https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-apis#authentication .
 // Note: This does not need to be called by a client, since this automatically runs via a background go-routine (`startRefresher`)
 func (az *AzureCSTextToSpeech) refreshToken() error {
+	request, _ := http.NewRequest(http.MethodPost, az.tokenRefreshURL, nil)
+	request.Header.Set("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
+	client := &http.Client{Timeout: tokenRefreshTimeout}
 
-	// Create a new client
-	cli := gentleman.New()
-
-	// Define base URL
-	cli.URL(az.tokenRefreshURL)
-
-	//cli.Use(body.Reader(bytes.NewBufferString(v)))
-
-	// Create a new request based on the current client
-	req := cli.Request().Method("POST")
-
-	req.SetHeader("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
-	// Set a new header field
-	//req.SetHeader("Authorization", "Bearer "+az.accessToken)
-
-	// request, _ := http.NewRequest(http.MethodPost, az.tokenRefreshURL, nil)
-	// request.Header.Set("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
-	// client := &http.Client{Timeout: tokenRefreshTimeout}
-
-	// response, err := client.Do(request)
-	// if err != nil {
-	// 	return err
-	// }
-	// defer response.Body.Close()
-
-	// Perform the request
-	res, err := req.Send()
+	response, err := client.Do(request)
 	if err != nil {
 		return err
 	}
-	if !res.Ok {
-		return err
+	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusOK {
+		return fmt.Errorf("unexpected status code; received http status=%s", response.Status)
 	}
 
-	if res.StatusCode != http.StatusOK {
-		return fmt.Errorf("unexpected status code; received http status=%s", res.RawResponse.Status)
-	}
-
-	body, _ := ioutil.ReadAll(res.RawRequest.Body)
+	body, _ := ioutil.ReadAll(response.Body)
 	az.accessToken = string(body)
 	return nil
 }
@@ -201,14 +142,12 @@ type AzureCSTextToSpeech struct {
 	tokenRefreshURL     string
 	voiceServiceListURL string
 	textToSpeechURL     string
-	HttpProxy           string
 }
 
 // New returns an AzureCSTextToSpeech object.
-func New(subscriptionKey string, region Region, proxy string) (*AzureCSTextToSpeech, error) {
+func New(subscriptionKey string, region Region) (*AzureCSTextToSpeech, error) {
 	az := &AzureCSTextToSpeech{
 		SubscriptionKey: subscriptionKey,
-		HttpProxy:       proxy,
 	}
 
 	az.textToSpeechURL = fmt.Sprintf(textToSpeechAPI, region)

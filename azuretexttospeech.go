@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -44,7 +45,24 @@ func (az *AzureCSTextToSpeech) SynthesizeWithContext(ctx context.Context, speech
 	request.Header.Set("Authorization", "Bearer "+az.accessToken)
 	request.Header.Set("User-Agent", "azuretts")
 
-	client := &http.Client{}
+	//client := &http.Client{}
+
+	var client *http.Client
+
+	if az.HttpProxy != "" {
+		proxyURL, err := url.Parse(az.HttpProxy)
+		if err != nil {
+			return nil, err
+		}
+
+		transport := &http.Transport{Proxy: http.ProxyURL(proxyURL)}
+		client = &http.Client{Transport: transport}
+
+	} else {
+
+		client = &http.Client{}
+	}
+
 	response, err := client.Do(request.WithContext(ctx))
 	if err != nil {
 		return nil, err
@@ -92,9 +110,25 @@ func voiceXML(speechText, description string, locale Locale, gender Gender) stri
 // https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-apis#authentication .
 // Note: This does not need to be called by a client, since this automatically runs via a background go-routine (`startRefresher`)
 func (az *AzureCSTextToSpeech) refreshToken() error {
+
 	request, _ := http.NewRequest(http.MethodPost, az.tokenRefreshURL, nil)
 	request.Header.Set("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
-	client := &http.Client{Timeout: tokenRefreshTimeout}
+
+	var client *http.Client
+
+	if az.HttpProxy != "" {
+		proxyURL, err := url.Parse(az.HttpProxy)
+		if err != nil {
+			return err
+		}
+
+		transport := &http.Transport{Proxy: http.ProxyURL(proxyURL)}
+		client = &http.Client{Timeout: tokenRefreshTimeout, Transport: transport}
+
+	} else {
+
+		client = &http.Client{Timeout: tokenRefreshTimeout}
+	}
 
 	response, err := client.Do(request)
 	if err != nil {
@@ -142,12 +176,14 @@ type AzureCSTextToSpeech struct {
 	tokenRefreshURL     string
 	voiceServiceListURL string
 	textToSpeechURL     string
+	HttpProxy           string
 }
 
 // New returns an AzureCSTextToSpeech object.
-func New(subscriptionKey string, region Region) (*AzureCSTextToSpeech, error) {
+func New(subscriptionKey string, region Region, proxy string) (*AzureCSTextToSpeech, error) {
 	az := &AzureCSTextToSpeech{
 		SubscriptionKey: subscriptionKey,
+		HttpProxy:       proxy,
 	}
 
 	az.textToSpeechURL = fmt.Sprintf(textToSpeechAPI, region)

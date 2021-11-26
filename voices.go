@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"gopkg.in/h2non/gentleman.v2"
+	"gopkg.in/h2non/gentleman.v2/plugins/proxy"
 )
 
 // voiceListAPI is the source for supported voice list to region mapping
@@ -60,6 +61,12 @@ func (az *AzureCSTextToSpeech) fetchVoiceList() ([]regionVoiceListResponse, erro
 
 	// Define base URL
 	cli.URL(az.voiceServiceListURL)
+
+	if az.HttpProxy != "" {
+
+		servers := map[string]string{"http": az.HttpProxy, "https": az.HttpProxy}
+		cli.Use(proxy.Set(servers))
+	}
 
 	// Create a new request based on the current client
 	req := cli.Request()

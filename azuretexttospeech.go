@@ -8,8 +8,6 @@ import (
 	"log"
 	"net/http"
 	"time"
-
-	"gopkg.in/h2non/gentleman.v2"
 )
 
 // The following are V1 endpoints for Cognitiveservices endpoints
@@ -127,44 +125,44 @@ func voiceXML(speechText, description string, locale Locale, gender Gender) stri
 func (az *AzureCSTextToSpeech) refreshToken() error {
 
 	// Create a new client
-	cli := gentleman.New()
+	// cli := gentleman.New()
 
-	// Define base URL
-	cli.URL(az.tokenRefreshURL)
+	// // Define base URL
+	// cli.URL(az.tokenRefreshURL)
 
-	//cli.Use(body.Reader(bytes.NewBufferString(v)))
+	// //cli.Use(body.Reader(bytes.NewBufferString(v)))
 
-	// Create a new request based on the current client
-	req := cli.Request().Method("POST")
+	// // Create a new request based on the current client
+	// req := cli.Request().Method("POST")
 
-	req.SetHeader("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
+	// req.SetHeader("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
 	// Set a new header field
 	//req.SetHeader("Authorization", "Bearer "+az.accessToken)
 
-	// request, _ := http.NewRequest(http.MethodPost, az.tokenRefreshURL, nil)
-	// request.Header.Set("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
-	// client := &http.Client{Timeout: tokenRefreshTimeout}
+	request, _ := http.NewRequest(http.MethodPost, az.tokenRefreshURL, nil)
+	request.Header.Set("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
+	client := &http.Client{Timeout: tokenRefreshTimeout}
 
-	// response, err := client.Do(request)
-	// if err != nil {
-	// 	return err
-	// }
-	// defer response.Body.Close()
-
-	// Perform the request
-	res, err := req.Send()
+	response, err := client.Do(request)
 	if err != nil {
 		return err
 	}
-	if !res.Ok {
-		return err
+	defer response.Body.Close()
+
+	// // Perform the request
+	// res, err := req.Send()
+	// if err != nil {
+	// 	return err
+	// }
+	// if !res.Ok {
+	// 	return err
+	// }
+
+	if response.StatusCode != http.StatusOK {
+		return fmt.Errorf("unexpected status code; received http status=%s", response.Status)
 	}
 
-	if res.StatusCode != http.StatusOK {
-		return fmt.Errorf("unexpected status code; received http status=%s", res.RawResponse.Status)
-	}
-
-	body, _ := ioutil.ReadAll(res.RawRequest.Body)
+	body, _ := ioutil.ReadAll(response.Body)
 	az.accessToken = string(body)
 	return nil
 }

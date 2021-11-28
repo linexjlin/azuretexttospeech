@@ -35,6 +35,62 @@ const (
 	OGG24khz16bitMonoOpus
 )
 
+var MapAudioFileExtensions = map[string]string{
+	"RAW16khz16bitMonoPCM":         "raw",
+	"RAW24khz16bitMonoPCM":         "raw",
+	"RAW48khz16bitMonoPCM":         "raw",
+	"RAW8khz8bitMonoMulaw":         "raw",
+	"RAW8khz8bitMonoAlaw":          "raw",
+	"AUDIO16khz32kbitrateMonoMP3":  "mp3",
+	"AUDIO16khz128kbitrateMonoMP3": "mp3",
+	"AUDIO24khz96kbitrateMonoMP3":  "mp3",
+	"AUDIO48khz96kbitrateMonoMP3":  "mp3",
+	"RAW16khz16bitMonoTruesilk":    "raw",
+	"WEBM16khz16bitMonoOpus":       "opus",
+	"OGG16khz16bitMonoOpus":        "opus",
+	"OGG48khz16bitMonoOpus":        "opus",
+	"RIFF16khz16bitMonoPCM":        "wav",
+	"RIFF24khz16bitMonoPCM":        "wav",
+	"RIFF48khz16bitMonoPCM":        "wav",
+	"RIFF8khz8bitMonoMulaw":        "wav",
+	"RIFF8khz8bitMonoAlaw":         "wav",
+	"AUDIO16khz64kbitrateMonoMP3":  "mp3",
+	"AUDIO24khz48kbitrateMonoMP3":  "mp3",
+	"AUDIO24khz160kbitrateMonoMP3": "mp3",
+	"AUDIO48khz192kbitrateMonoMP3": "mp3",
+	"RAW24khz16bitMonoTruesilk":    "raw",
+	"WEBM24khz16bitMonoOpus":       "webm",
+	"OGG24khz16bitMonoOpus":        "ogg",
+}
+
+var MapAudioToFormatid = map[string]AudioOutput{
+	"RAW16khz16bitMonoPCM":         RAW16khz16bitMonoPCM,
+	"RAW24khz16bitMonoPCM":         RAW24khz16bitMonoPCM,
+	"RAW48khz16bitMonoPCM":         RAW48khz16bitMonoPCM,
+	"RAW8khz8bitMonoMulaw":         RAW8khz8bitMonoMulaw,
+	"RAW8khz8bitMonoAlaw":          RAW8khz8bitMonoAlaw,
+	"AUDIO16khz32kbitrateMonoMP3":  AUDIO16khz32kbitrateMonoMP3,
+	"AUDIO16khz128kbitrateMonoMP3": AUDIO16khz128kbitrateMonoMP3,
+	"AUDIO24khz96kbitrateMonoMP3":  AUDIO24khz96kbitrateMonoMP3,
+	"AUDIO48khz96kbitrateMonoMP3":  AUDIO48khz96kbitrateMonoMP3,
+	"RAW16khz16bitMonoTruesilk":    RAW16khz16bitMonoTruesilk,
+	"WEBM16khz16bitMonoOpus":       WEBM16khz16bitMonoOpus,
+	"OGG16khz16bitMonoOpus":        OGG16khz16bitMonoOpus,
+	"OGG48khz16bitMonoOpus":        OGG48khz16bitMonoOpus,
+	"RIFF16khz16bitMonoPCM":        RIFF16khz16bitMonoPCM,
+	"RIFF24khz16bitMonoPCM":        RIFF24khz16bitMonoPCM,
+	"RIFF48khz16bitMonoPCM":        RIFF48khz16bitMonoPCM,
+	"RIFF8khz8bitMonoMulaw":        RIFF8khz8bitMonoMulaw,
+	"RIFF8khz8bitMonoAlaw":         RIFF8khz8bitMonoAlaw,
+	"AUDIO16khz64kbitrateMonoMP3":  AUDIO16khz64kbitrateMonoMP3,
+	"AUDIO24khz48kbitrateMonoMP3":  AUDIO24khz48kbitrateMonoMP3,
+	"AUDIO24khz160kbitrateMonoMP3": AUDIO24khz160kbitrateMonoMP3,
+	"AUDIO48khz192kbitrateMonoMP3": AUDIO48khz192kbitrateMonoMP3,
+	"RAW24khz16bitMonoTruesilk":    RAW24khz16bitMonoTruesilk,
+	"WEBM24khz16bitMonoOpus":       WEBM24khz16bitMonoOpus,
+	"OGG24khz16bitMonoOpus":        OGG24khz16bitMonoOpus,
+}
+
 // const (
 // 	AudioRIFF8Bit8kHzMonoPCM AudioOutput = iota
 // 	AudioRIFF16Bit16kHzMonoPCM

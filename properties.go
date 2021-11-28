@@ -7,6 +7,34 @@ package azuretexttospeech
 
 type AudioOutput int
 
+// const (
+// 	raw-16khz-16bit-mono-pcm  AudioOutput = iota
+// 	raw-24khz-16bit-mono-pcm
+// 	raw-48khz-16bit-mono-pcm
+// 	raw-8khz-8bit-mono-mulaw
+// 	raw-8khz-8bit-mono-alaw
+// 	audio-16khz-32kbitrate-mono-mp3
+// 	audio-16khz-128kbitrate-mono-mp3
+// 	audio-24khz-96kbitrate-mono-mp3
+// 	audio-48khz-96kbitrate-mono-mp3
+// 	raw-16khz-16bit-mono-truesilk
+// 	webm-16khz-16bit-mono-opus
+// 	ogg-16khz-16bit-mono-opus
+// 	ogg-48khz-16bit-mono-opus
+// 	riff-16khz-16bit-mono-pcm
+// 	riff-24khz-16bit-mono-pcm
+// 	riff-48khz-16bit-mono-pcm
+// 	riff-8khz-8bit-mono-mulaw
+// 	riff-8khz-8bit-mono-alaw
+// 	audio-16khz-64kbitrate-mono-mp3
+// 	audio-24khz-48kbitrate-mono-mp3
+// 	audio-24khz-160kbitrate-mono-mp3
+// 	audio-48khz-192kbitrate-mono-mp3
+// 	raw-24khz-16bit-mono-truesilk
+// 	webm-24khz-16bit-mono-opus
+// 	ogg-24khz-16bit-mono-opus
+// )
+
 const (
 	AudioRIFF8Bit8kHzMonoPCM AudioOutput = iota
 	AudioRIFF16Bit16kHzMonoPCM

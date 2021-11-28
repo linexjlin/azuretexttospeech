@@ -7,68 +7,98 @@ package azuretexttospeech
 
 type AudioOutput int
 
-// const (
-// 	raw-16khz-16bit-mono-pcm  AudioOutput = iota
-// 	raw-24khz-16bit-mono-pcm
-// 	raw-48khz-16bit-mono-pcm
-// 	raw-8khz-8bit-mono-mulaw
-// 	raw-8khz-8bit-mono-alaw
-// 	audio-16khz-32kbitrate-mono-mp3
-// 	audio-16khz-128kbitrate-mono-mp3
-// 	audio-24khz-96kbitrate-mono-mp3
-// 	audio-48khz-96kbitrate-mono-mp3
-// 	raw-16khz-16bit-mono-truesilk
-// 	webm-16khz-16bit-mono-opus
-// 	ogg-16khz-16bit-mono-opus
-// 	ogg-48khz-16bit-mono-opus
-// 	riff-16khz-16bit-mono-pcm
-// 	riff-24khz-16bit-mono-pcm
-// 	riff-48khz-16bit-mono-pcm
-// 	riff-8khz-8bit-mono-mulaw
-// 	riff-8khz-8bit-mono-alaw
-// 	audio-16khz-64kbitrate-mono-mp3
-// 	audio-24khz-48kbitrate-mono-mp3
-// 	audio-24khz-160kbitrate-mono-mp3
-// 	audio-48khz-192kbitrate-mono-mp3
-// 	raw-24khz-16bit-mono-truesilk
-// 	webm-24khz-16bit-mono-opus
-// 	ogg-24khz-16bit-mono-opus
-// )
-
 const (
-	AudioRIFF8Bit8kHzMonoPCM AudioOutput = iota
-	AudioRIFF16Bit16kHzMonoPCM
-	AudioRIFF16khz16kbpsMonoSiren
-	AudioRIFF24khz16bitMonoPcm
-	AudioRAW8Bit8kHzMonoMulaw
-	AudioRAW16Bit16kHzMonoMulaw
-	AudioRAW24khz16bitMonoPcm
-	AudioSsml16khz16bitMonoTts
-	Audio16khz16kbpsMonoSiren
-	Audio16khz32kbitrateMonoMp3
-	Audio6khz64kbitrateMonoMp3
-	Audio16khz128kbitrateMonoMp3
-	Audio24khz48kbitrateMonoMp3
-	Audio24khz96kbitrateMonoMp3
+	RAW16khz16bitMonoPCM AudioOutput = iota
+	RAW24khz16bitMonoPCM
+	RAW48khz16bitMonoPCM
+	RAW8khz8bitMonoMulaw
+	RAW8khz8bitMonoAlaw
+	AUDIO16khz32kbitrateMonoMP3
+	AUDIO16khz128kbitrateMonoMP3
+	AUDIO24khz96kbitrateMonoMP3
+	AUDIO48khz96kbitrateMonoMP3
+	RAW16khz16bitMonoTruesilk
+	WEBM16khz16bitMonoOpus
+	OGG16khz16bitMonoOpus
+	OGG48khz16bitMonoOpus
+	RIFF16khz16bitMonoPCM
+	RIFF24khz16bitMonoPCM
+	RIFF48khz16bitMonoPCM
+	RIFF8khz8bitMonoMulaw
+	RIFF8khz8bitMonoAlaw
+	AUDIO16khz64kbitrateMonoMP3
+	AUDIO24khz48kbitrateMonoMP3
+	AUDIO24khz160kbitrateMonoMP3
+	AUDIO48khz192kbitrateMonoMP3
+	RAW24khz16bitMonoTruesilk
+	WEBM24khz16bitMonoOpus
+	OGG24khz16bitMonoOpus
 )
 
+// const (
+// 	AudioRIFF8Bit8kHzMonoPCM AudioOutput = iota
+// 	AudioRIFF16Bit16kHzMonoPCM
+// 	AudioRIFF16khz16kbpsMonoSiren
+// 	AudioRIFF24khz16bitMonoPcm
+// 	AudioRAW8Bit8kHzMonoMulaw
+// 	AudioRAW16Bit16kHzMonoMulaw
+// 	AudioRAW24khz16bitMonoPcm
+// 	AudioSsml16khz16bitMonoTts
+// 	Audio16khz16kbpsMonoSiren
+// 	Audio16khz32kbitrateMonoMp3
+// 	Audio6khz64kbitrateMonoMp3
+// 	Audio16khz128kbitrateMonoMp3
+// 	Audio24khz48kbitrateMonoMp3
+// 	Audio24khz96kbitrateMonoMp3
+// )
+
 func (a AudioOutput) String() string {
-	return []string{"riff-8khz-8bit-mono-mulaw",
-		"riff-16khz-16bit-mono-pcm",
-		"riff-16khz-16kbps-mono-siren",
-		"riff-24khz-16bit-mono-pcm",
-		"raw-8khz-8bit-mono-mulaw",
+	return []string{
 		"raw-16khz-16bit-mono-pcm",
 		"raw-24khz-16bit-mono-pcm",
-		"ssml-16khz-16bit-mono-tts",
-		"audio-16khz-16kbps-mono-siren",
+		"raw-48khz-16bit-mono-pcm",
+		"raw-8khz-8bit-mono-mulaw",
+		"raw-8khz-8bit-mono-alaw",
 		"audio-16khz-32kbitrate-mono-mp3",
-		"audio-16khz-64kbitrate-mono-mp3",
 		"audio-16khz-128kbitrate-mono-mp3",
-		"audio-24khz-48kbitrate-mono-mp3",
 		"audio-24khz-96kbitrate-mono-mp3",
+		"audio-48khz-96kbitrate-mono-mp3",
+		"raw-16khz-16bit-mono-truesilk",
+		"webm-16khz-16bit-mono-opus",
+		"ogg-16khz-16bit-mono-opus",
+		"ogg-48khz-16bit-mono-opus",
+		"riff-16khz-16bit-mono-pcm",
+		"riff-24khz-16bit-mono-pcm",
+		"riff-48khz-16bit-mono-pcm",
+		"riff-8khz-8bit-mono-mulaw",
+		"riff-8khz-8bit-mono-alaw",
+		"audio-16khz-64kbitrate-mono-mp3",
+		"audio-24khz-48kbitrate-mono-mp3",
+		"audio-24khz-160kbitrate-mono-mp3",
+		"audio-48khz-192kbitrate-mono-mp3",
+		"raw-24khz-16bit-mono-truesilk",
+		"webm-24khz-16bit-mono-opus",
+		"ogg-24khz-16bit-mono-opus",
 	}[a]
 }
+
+// func (a AudioOutput) String() string {
+// 	return []string{"riff-8khz-8bit-mono-mulaw",
+// 		"riff-16khz-16bit-mono-pcm",
+// 		"riff-16khz-16kbps-mono-siren",
+// 		"riff-24khz-16bit-mono-pcm",
+// 		"raw-8khz-8bit-mono-mulaw",
+// 		"raw-16khz-16bit-mono-pcm",
+// 		"raw-24khz-16bit-mono-pcm",
+// 		"ssml-16khz-16bit-mono-tts",
+// 		"audio-16khz-16kbps-mono-siren",
+// 		"audio-16khz-32kbitrate-mono-mp3",
+// 		"audio-16khz-64kbitrate-mono-mp3",
+// 		"audio-16khz-128kbitrate-mono-mp3",
+// 		"audio-24khz-48kbitrate-mono-mp3",
+// 		"audio-24khz-96kbitrate-mono-mp3",
+// 	}[a]
+// }
 
 // Gender type for the digitized language
 //go:generate enumer -type=Gender -linecomment -json

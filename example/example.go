@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	tts "github.com/jesseward/azuretexttospeech"
+	tts "github.com/linexjlin/azuretexttospeech"
 )
 
 func exit(err error) {
@@ -24,7 +24,7 @@ func main() {
 	if apiKey = os.Getenv("AZUREKEY"); apiKey == "" {
 		exit(fmt.Errorf("Please set your AZUREKEY environment variable"))
 	}
-	az, err := tts.New(apiKey, tts.RegionEastUS)
+	az, err := tts.New(apiKey, tts.RegionEastAsia, "")
 	if err != nil {
 		exit(fmt.Errorf("failed to create new client, received %v", err))
 	}
@@ -36,9 +36,9 @@ func main() {
 	b, err := az.SynthesizeWithContext(
 		ctx,
 		"64 BASIC BYTES FREE. READY.",
-		tts.LocaleEnUS,
+		tts.LocalezhCN,
 		tts.GenderFemale,
-		tts.Audio16khz32kbitrateMonoMp3)
+		tts.AUDIO16khz128kbitrateMonoMP3)
 
 	if err != nil {
 		exit(fmt.Errorf("unable to synthesize, received: %v", err))

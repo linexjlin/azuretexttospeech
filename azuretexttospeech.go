@@ -24,19 +24,19 @@ const tokenRefreshTimeout = time.Second * 15
 
 // TTSApiXMLPayload templates the payload required for API.
 // See: https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#sample-request
-const ttsApiXMLPayload = "<speak version='1.0' xml:lang='%s'><voice xml:lang='%s' xml:gender='%s' name='%s'>%s</voice></speak>"
+const ttsApiXMLPayload = `<speak version='1.0' xml:lang='%s'><voice xml:lang='%s' name='%s'><prosody rate="%s" pitch="%s">%s</prosody></voice></speak>`
 
 // SynthesizeWithContext returns a bytestream of the rendered text-to-speech in the target audio format. `speechText` is the string of
 // text in which a user wishes to Synthesize, `region` is the language/locale, `gender` is the desired output voice
 // and `audioOutput` captures the audio format.
-func (az *AzureCSTextToSpeech) SynthesizeWithContext(ctx context.Context, speechText string, locale Locale, gender Gender, audioOutput AudioOutput) ([]byte, error) {
+func (az *AzureCSTextToSpeech) SynthesizeWithContext(ctx context.Context, speechText string, locale Locale, name, pitch, rate string, audioOutput AudioOutput) ([]byte, error) {
 
-	description, ok := az.RegionVoiceMap[supportedVoices{gender, locale}]
+	/*description, ok := az.RegionVoiceMap[supportedVoices{gender, locale}]
 	if !ok {
-		return nil, fmt.Errorf("unable to to locate RegionVoiceMap{region=%s, gender=%s} pair", locale, gender)
-	}
+		return nil, fmt.Errorf("unable to to locate RegionVoiceMap{region=%s, gender=%s } pair", locale, gender)
+	}*/
 
-	v := voiceXML(speechText, description, locale, gender)
+	v := voiceXML(speechText, locale, name, pitch, rate)
 	request, err := http.NewRequestWithContext(ctx, http.MethodPost, az.textToSpeechURL, bytes.NewBufferString(v))
 	if err != nil {
 		return nil, err
@@ -100,16 +100,16 @@ func (az *AzureCSTextToSpeech) SynthesizeWithContext(ctx context.Context, speech
 }
 
 // Synthesize directs to SynthesizeWithContext. A new context.Withtimeout is created with the timeout as defined by synthesizeActionTimeout
-func (az *AzureCSTextToSpeech) Synthesize(speechText string, locale Locale, gender Gender, audioOutput AudioOutput) ([]byte, error) {
+func (az *AzureCSTextToSpeech) Synthesize(speechText string, locale Locale, name, pitch, rate string, audioOutput AudioOutput) ([]byte, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), synthesizeActionTimeout)
 	defer cancel()
-	return az.SynthesizeWithContext(ctx, speechText, locale, gender, audioOutput)
+	return az.SynthesizeWithContext(ctx, speechText, locale, name, pitch, rate, audioOutput)
 }
 
 // voiceXML renders the XML payload for the TTS api.
 // For API reference see https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#sample-request
-func voiceXML(speechText, description string, locale Locale, gender Gender) string {
-	return fmt.Sprintf(ttsApiXMLPayload, locale, locale, gender, description, speechText)
+func voiceXML(speechText string, locale Locale, name, pitch, rate string) string {
+	return fmt.Sprintf(ttsApiXMLPayload, locale, locale, name, rate, pitch, speechText)
 }
 
 // refreshToken fetches an updated token from the Azure cognitive speech/text services, or an error if unable to retrive.

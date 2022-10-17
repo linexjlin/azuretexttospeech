@@ -27,7 +27,7 @@ type regionVoiceListResponse struct {
 	Name            string    `json:"Name"`
 	ShortName       string    `json:"ShortName"`
 	Gender          Gender    `json:"Gender"`
-	Locale          Locale    `json:"Locale"`
+	Locale          string    `json:"Locale"`
 	SampleRateHertz string    `json:"SampleRateHertz"`
 	VoiceType       voiceType `json:"VoiceType"`
 }
@@ -35,7 +35,7 @@ type regionVoiceListResponse struct {
 // supportedVoices represents the key used within the `localeToGender` map.
 type supportedVoices struct {
 	Gender Gender
-	Locale Locale
+	Locale string
 }
 
 type RegionVoiceMap map[supportedVoices]string

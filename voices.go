@@ -23,13 +23,24 @@ const (
 	voiceNeural                    // Neural
 )
 
+type ExtendedPropertyMap struct {
+	IsHighQuality48K string `json:"IsHighQuality48K,omitempty"`
+}
+
 type regionVoiceListResponse struct {
-	Name            string    `json:"Name"`
-	ShortName       string    `json:"ShortName"`
-	Gender          string    `json:"Gender"`
-	Locale          string    `json:"Locale"`
-	SampleRateHertz string    `json:"SampleRateHertz"`
-	VoiceType       voiceType `json:"VoiceType"`
+	Name                string   `json:"Name"`
+	ShortName           string   `json:"ShortName"`
+	DisplayName         string   `json:"DisplayName"`
+	LocalName           string   `json:"LocalName"`
+	Gender              string   `json:"Gender"`
+	StyleList           []string `json:"StyleList"`
+	SecondaryLocaleList []string `json:"SecondaryLocaleList"`
+	Locale              string   `json:"Locale"`
+	Status              string   `json:"Status"`
+	SampleRateHertz     string   `json:"SampleRateHertz"`
+	VoiceType           string   `json:"VoiceType"`
+	WordsPerMinute      string   `json:"WordsPerMinute"`
+	RolePlayList        []string `json:"RolePlayList,omitempty"`
 }
 
 // supportedVoices represents the key used within the `localeToGender` map.
@@ -49,7 +60,7 @@ func (az *AzureCSTextToSpeech) buildVoiceToRegionMap() (RegionVoiceMap, error) {
 
 	m := make(map[supportedVoices]string)
 	for _, x := range v {
-		if x.VoiceType == voiceNeural {
+		if x.VoiceType == "Neural" {
 			m[supportedVoices{Gender: x.Gender, Locale: x.Locale}] = x.ShortName
 		}
 	}

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"context"
+	//	"context"
 	"fmt"
-	"io/ioutil"
+	//	"io/ioutil"
 	"os"
 
 	tts "github.com/linexjlin/azuretexttospeech"
@@ -32,21 +32,4 @@ func main() {
 
 	// Digitize a text string using the enUS locale, female voice and specify the
 	// audio format of a 16Khz, 32kbit mp3 file.
-	ctx := context.Background()
-	b, err := az.SynthesizeWithContext(
-		ctx,
-		"64 BASIC BYTES FREE. READY.",
-		tts.LocalezhCN,
-		tts.GenderFemale,
-		tts.AUDIO16khz128kbitrateMonoMP3)
-
-	if err != nil {
-		exit(fmt.Errorf("unable to synthesize, received: %v", err))
-	}
-
-	// send results to disk.
-	err = ioutil.WriteFile("audio.mp3", b, 0644)
-	if err != nil {
-		exit(fmt.Errorf("unable to write file, received %v", err))
-	}
 }
